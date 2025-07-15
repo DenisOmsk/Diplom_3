@@ -9,9 +9,19 @@ import screenform.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UserProfileTest extends AbstractTest {
-    // Тестовый пользователь с фиксированными данными
-    protected static final User USER_1 = new User("denis_user@yandex.ru", "password", "Денис");
-    protected String accessToken; // Токен доступа для аутентификации пользователя
+    /* ========  КОНСТАНТЫ, вместо "магических значений"  ======== */
+    private static final String USER_EMAIL = "denis_user@yandex.ru";
+    private static final String USER_PASSWORD = "password";
+    private static final String USER_NAME = "Денис";
+
+    private static final String MAIN_PAGE_PATH = "/";
+    private static final String LOGIN_PAGE_PATH = "/login";
+
+    /* ========  ТЕСТОВЫЕ ДАННЫЕ  ======== */
+    protected static final User USER_1 =
+            new User(USER_EMAIL, USER_PASSWORD, USER_NAME);
+
+    protected String accessToken;
 
     // Объекты экранов для взаимодействия с UI
     MainScreen objMainPage;
@@ -35,7 +45,7 @@ public class UserProfileTest extends AbstractTest {
         objLoginPage.waitForLoadPage();
 
         // Авторизация пользователя
-        objLoginPage.loginUser(USER_1.getEmail(), USER_1.getPassword());
+        objLoginPage.loginUser(USER_EMAIL, USER_PASSWORD);
         objMainPage.waitForLoadPage();
 
         // Переход в профиль пользователя по кнопке "Личный Кабинет"
@@ -47,9 +57,9 @@ public class UserProfileTest extends AbstractTest {
     @DisplayName("Нажатие на логотип \"Stellar Burgers\"")
     public void checkClickLogoStellarBurgers() {
         objUserProfileScreen.clickLogoStellarBurgers();
-
         objMainPage.waitForLoadPage();
-        assertEquals(hostTest + "/", driver.getCurrentUrl(),
+        assertEquals(hostTest + MAIN_PAGE_PATH,
+                driver.getCurrentUrl(),
                 "Открыта не главная страница \"Stellar Burgers\"!");
     }
 
@@ -57,9 +67,9 @@ public class UserProfileTest extends AbstractTest {
     @DisplayName("Нажатие на кнопку \"Конструктор\"")
     public void checkClickConstructorButton() {
         objUserProfileScreen.clickConstructorButton();
-
         objMainPage.waitForLoadPage();
-        assertEquals(hostTest + "/", driver.getCurrentUrl(),
+        assertEquals(hostTest + MAIN_PAGE_PATH,
+                driver.getCurrentUrl(),
                 "Открыта не главная страница \"Stellar Burgers\"!");
     }
 
@@ -73,7 +83,8 @@ public class UserProfileTest extends AbstractTest {
         objMainPage.clickAccountButton();
         objLoginPage.waitForLoadPage();
 
-        assertEquals(hostTest + "/login", driver.getCurrentUrl(),
+        assertEquals(hostTest + LOGIN_PAGE_PATH,
+                driver.getCurrentUrl(),
                 "Открыта не форма авторизации \"Вход\"!");
     }
 
